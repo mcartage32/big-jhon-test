@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model, authenticate
 from rest_framework_simplejwt.tokens import RefreshToken
+from .exceptions import UserAlreadyExistsError
 from .validators import validate_email, validate_password
 
 User = get_user_model()
@@ -7,6 +8,9 @@ User = get_user_model()
 def create_user(email: str, password: str):
     validate_email(email)
     validate_password(password)
+
+    if User.objects.filter(email=email).exists():
+        raise UserAlreadyExistsError("User with this email already exists")
 
     return User.objects.create_user(
         email=email,
