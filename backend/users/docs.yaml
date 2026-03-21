@@ -1,0 +1,70 @@
+paths:
+  /users/register/:
+    post:
+      tags: [Users]
+      summary: Register user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        "201":
+          description: User created
+        "409":
+          description: User already exists
+
+  /users/login/:
+    post:
+      tags: [Users]
+      summary: Login user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        "200":
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  access:
+                    type: string
+                  refresh:
+                    type: string
+        "401":
+          description: Invalid credentials
+
+  /users/logout/:
+    post:
+      tags: [Users]
+      summary: Logout user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                refresh:
+                  type: string
+      responses:
+        "200":
+          description: Logout successful
+        "400":
+          description: Invalid or expired token
