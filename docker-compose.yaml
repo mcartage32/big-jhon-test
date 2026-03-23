@@ -2,7 +2,7 @@ services:
   db:
     image: postgres:15
     environment:
-      POSTGRES_DB: big-jhon-test
+      POSTGRES_DB: big_jhon_test
       POSTGRES_USER: root
       POSTGRES_PASSWORD: root
     ports:
