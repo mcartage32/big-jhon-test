@@ -4,7 +4,10 @@ from .views import (
     AppointmentDetailView,
     AppointmentCancelView,
     AppointmentUpdateView,
-    AppointmentCreateView
+    AppointmentCreateView,
+    SupplierListView,   
+    ProductLineListView,
+    StatusListView
 )
 
 urlpatterns = [
@@ -13,5 +16,7 @@ urlpatterns = [
     path("<uuid:appointment_id>/", AppointmentDetailView.as_view()),
     path("<uuid:appointment_id>/cancel/", AppointmentCancelView.as_view()),
     path("<uuid:appointment_id>/update/", AppointmentUpdateView.as_view()),
-    
+    path("suppliers/", SupplierListView.as_view()),
+    path("product-lines/", ProductLineListView.as_view()),
+    path("statuses/", StatusListView.as_view()),
 ]

@@ -2,15 +2,22 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
-from appointments.application.services import create_appointment
 from .serializers import AppointmentSerializer
+from appointments.domain.enums import Supplier, ProductLine, Status
 from appointments.application.services import (
     list_appointments,
     get_appointment_by_id,
     cancel_appointment,
     update_appointment,
+    create_appointment
 )
 
+# Funcion helper reutilizable para convertir enums a listas de opciones
+def enum_to_list(enum):
+    return [
+        {"value": item.value, "label": item.label}
+        for item in enum
+    ]
 
 class AppointmentCreateView(APIView):
     permission_classes = [IsAuthenticated]
@@ -96,3 +103,23 @@ class AppointmentUpdateView(APIView):
         updated = update_appointment(appointment, request.data)
 
         return Response(AppointmentSerializer(updated).data)
+
+class SupplierListView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        return Response(enum_to_list(Supplier))
+
+
+class ProductLineListView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        return Response(enum_to_list(ProductLine))
+
+
+class StatusListView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        return Response(enum_to_list(Status))
