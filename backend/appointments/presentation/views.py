@@ -11,7 +11,8 @@ from appointments.application.services import (
     get_appointment_by_id,
     cancel_appointment,
     update_appointment,
-    create_appointment
+    create_appointment,
+    dashboardInfo
 )
 
 # Funcion helper reutilizable para convertir enums a listas de opciones
@@ -176,3 +177,10 @@ class DeliveryStatsView(APIView):
         ]
 
         return Response({"data": data})
+    
+class DashboardView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        data = dashboardInfo()
+        return Response(data)

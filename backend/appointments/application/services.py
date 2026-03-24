@@ -2,11 +2,13 @@ from typing import TYPE_CHECKING
 from django.contrib.auth import get_user_model
 from appointments.domain.models import Appointment
 from appointments.domain.enums import Status
+from django.db.models import Count
 from .validators import validate_scheduled_at, validate_delivery, normalize_scheduled_at
 from django.core.paginator import Paginator
 from appointments.infrastructure.queries import get_appointments
 from appointments.domain.enums import Status
 from .validators import validate_status_transition
+from django.utils import timezone
 
 if TYPE_CHECKING:
     from users.domain.models import User  
@@ -90,3 +92,19 @@ def update_appointment(appointment, data: dict):
 
     appointment.save()
     return appointment
+
+def dashboardInfo():
+    today = timezone.now().date()
+
+    # Total de citas por estado
+    total_by_status = Appointment.objects.values('status').order_by('status') \
+        .annotate(total=Count('id'))
+
+    # Total de citas del día actual
+    today_appointments = Appointment.objects.filter(scheduled_at=today).count()
+
+    # Devolver como JSON
+    return {
+        "total_by_status": list(total_by_status),
+        "today_appointments": today_appointments
+    }

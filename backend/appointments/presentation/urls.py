@@ -8,7 +8,8 @@ from .views import (
     SupplierListView,   
     ProductLineListView,
     StatusListView,
-    DeliveryStatsView
+    DeliveryStatsView,
+    DashboardView
 )
 
 urlpatterns = [
@@ -21,4 +22,5 @@ urlpatterns = [
     path("product-lines/", ProductLineListView.as_view()),
     path("statuses/", StatusListView.as_view()),
     path("delivery-stats/", DeliveryStatsView.as_view()),
+    path("dashboard/", DashboardView.as_view()),
 ]
