@@ -1,0 +1,320 @@
+paths:
+  /appointments/:
+    post:
+      tags: [Appointments]
+      summary: Create appointment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                scheduled_at:
+                  type: string
+                  format: date-time
+                supplier:
+                  type: string
+                  enum: [SAMARA, URBAN, GOLDEN]
+                product_line:
+                  type: string
+                  enum: [SHIRTS, PANTS, SHOES, ACCESSORIES]
+                status:
+                  type: string
+                  enum: [SCHEDULED, IN_PROGRESS, DELIVERED, CANCELLED]
+                delivered_at:
+                  type: string
+                  format: date-time
+                observations:
+                  type: string
+      responses:
+        "201":
+          description: Appointment created
+        "400":
+          description: Validation error
+
+  /appointments/list/:
+    get:
+      tags: [Appointments]
+      summary: List appointments with optional filters
+      parameters:
+        - in: query
+          name: date
+          schema:
+            type: string
+            format: date
+        - in: query
+          name: supplier
+          schema:
+            type: string
+            enum: [SAMARA, URBAN, GOLDEN]
+        - in: query
+          name: product_line
+          schema:
+            type: string
+            enum: [SHIRTS, PANTS, SHOES, ACCESSORIES]
+        - in: query
+          name: status
+          schema:
+            type: string
+            enum: [SCHEDULED, IN_PROGRESS, DELIVERED, CANCELLED]
+        - in: query
+          name: page
+          schema:
+            type: integer
+        - in: query
+          name: limit
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: List of appointments
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  total:
+                    type: integer
+                  page:
+                    type: integer
+                  total_pages:
+                    type: integer
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Appointment"
+
+  /appointments/{appointment_id}/:
+    get:
+      tags: [Appointments]
+      summary: Retrieve appointment by ID
+      parameters:
+        - in: path
+          name: appointment_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Appointment details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Appointment"
+        "404":
+          description: Not found
+
+  /appointments/{appointment_id}/update/:
+    patch:
+      tags: [Appointments]
+      summary: Update appointment
+      parameters:
+        - in: path
+          name: appointment_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                scheduled_at:
+                  type: string
+                  format: date-time
+                supplier:
+                  type: string
+                  enum: [SAMARA, URBAN, GOLDEN]
+                product_line:
+                  type: string
+                  enum: [SHIRTS, PANTS, SHOES, ACCESSORIES]
+                status:
+                  type: string
+                  enum: [SCHEDULED, IN_PROGRESS, DELIVERED, CANCELLED]
+                delivered_at:
+                  type: string
+                  format: date-time
+                observations:
+                  type: string
+      responses:
+        "200":
+          description: Appointment updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Appointment"
+        "400":
+          description: Validation error
+        "404":
+          description: Not found
+
+  /appointments/{appointment_id}/cancel/:
+    delete:
+      tags: [Appointments]
+      summary: Cancel appointment
+      parameters:
+        - in: path
+          name: appointment_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Appointment cancelled
+        "404":
+          description: Not found
+
+  /appointments/suppliers/:
+    get:
+      tags: [Appointments]
+      summary: List available suppliers
+      responses:
+        "200":
+          description: List of suppliers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    value:
+                      type: string
+                      enum: [SAMARA, URBAN, GOLDEN]
+                    label:
+                      type: string
+                      example: "Samara Ropa intima"
+
+  /appointments/product-lines/:
+    get:
+      tags: [Appointments]
+      summary: List available product lines
+      responses:
+        "200":
+          description: List of product lines
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    value:
+                      type: string
+                      enum: [SHIRTS, PANTS, SHOES, ACCESSORIES]
+                    label:
+                      type: string
+                      example: "Camisetas"
+
+  /appointments/statuses/:
+    get:
+      tags: [Appointments]
+      summary: List available statuses
+      responses:
+        "200":
+          description: List of statuses
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    value:
+                      type: string
+                      enum: [SCHEDULED, IN_PROGRESS, DELIVERED, CANCELLED]
+                    label:
+                      type: string
+                      example: "Programada"
+
+  /appointments/delivery-stats/:
+    get:
+      tags: [Appointments]
+      summary: Get delivery statistics grouped by product line
+      parameters:
+        - in: query
+          name: date_from
+          required: true
+          schema:
+            type: string
+            format: date
+        - in: query
+          name: date_to
+          required: true
+          schema:
+            type: string
+            format: date
+      responses:
+        "200":
+          description: Delivery statistics
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        product_line:
+                          type: string
+                        total_deliveries:
+                          type: integer
+                        avg_hours:
+                          type: number
+                        avg_minutes:
+                          type: number
+        "400":
+          description: Validation error (e.g., same date_from and date_to)
+
+components:
+  schemas:
+    Appointment:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        scheduled_at:
+          type: string
+          format: date-time
+        delivered_at:
+          type: string
+          format: date-time
+          nullable: true
+        observations:
+          type: string
+          nullable: true
+        supplier:
+          type: string
+          enum: [SAMARA, URBAN, GOLDEN]
+        supplier_display:
+          type: string
+          example: "Samara Ropa intima"
+        product_line:
+          type: string
+          enum: [SHIRTS, PANTS, SHOES, ACCESSORIES]
+        product_line_display:
+          type: string
+          example: "Zapatos"
+        status:
+          type: string
+          enum: [SCHEDULED, IN_PROGRESS, DELIVERED, CANCELLED]
+        status_display:
+          type: string
+          example: "En proceso"
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        created_by:
+          type: integer
