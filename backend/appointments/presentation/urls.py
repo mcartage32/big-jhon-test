@@ -7,7 +7,8 @@ from .views import (
     AppointmentCreateView,
     SupplierListView,   
     ProductLineListView,
-    StatusListView
+    StatusListView,
+    DeliveryStatsView
 )
 
 urlpatterns = [
@@ -19,4 +20,5 @@ urlpatterns = [
     path("suppliers/", SupplierListView.as_view()),
     path("product-lines/", ProductLineListView.as_view()),
     path("statuses/", StatusListView.as_view()),
+    path("delivery-stats/", DeliveryStatsView.as_view()),
 ]

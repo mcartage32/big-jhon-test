@@ -4,6 +4,8 @@ from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from .serializers import AppointmentSerializer
 from appointments.domain.enums import Supplier, ProductLine, Status
+from appointments.infrastructure.queries import get_delivery_stats
+from datetime import datetime, time
 from appointments.application.services import (
     list_appointments,
     get_appointment_by_id,
@@ -123,3 +125,54 @@ class StatusListView(APIView):
 
     def get(self, request):
         return Response(enum_to_list(Status))
+    
+class DeliveryStatsView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        date_from = request.query_params.get("date_from")
+        date_to = request.query_params.get("date_to")
+
+        # Validaciones básicas
+        if not date_from or not date_to:
+            return Response(
+                {"detail": "You must provide date_from and date_to query parameters"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        if date_from == date_to:
+            return Response(
+                {"detail": "date_from and date_to cannot be the same date"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        try:
+            # Convertir strings a datetime
+            date_from_dt = datetime.strptime(date_from, "%Y-%m-%d")
+            date_to_dt = datetime.strptime(date_to, "%Y-%m-%d")
+
+            # Rango completo del día
+            date_from_dt = datetime.combine(date_from_dt.date(), time.min)
+            date_to_dt = datetime.combine(date_to_dt.date(), time.max)
+
+        except ValueError:
+            return Response(
+                {"detail": "Invalid date format, must be YYYY-MM-DD"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        # Ejecutar consulta SQL nativa
+        stats = get_delivery_stats(date_from_dt, date_to_dt)
+
+        # Transformar resultado en lista de dicts
+        data = [
+            {
+                "product_line": row[0],
+                "total_deliveries": row[1],
+                "avg_hours": float(row[2]) if row[2] is not None else None,
+                "avg_minutes": float(row[3]) if row[3] is not None else None,
+            }
+            for row in stats
+        ]
+
+        return Response({"data": data})
