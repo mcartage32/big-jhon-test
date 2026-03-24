@@ -39,7 +39,7 @@ paths:
       summary: List appointments with optional filters
       parameters:
         - in: query
-          name: date
+          name: scheduled_date
           schema:
             type: string
             format: date

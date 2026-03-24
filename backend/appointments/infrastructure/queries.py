@@ -7,8 +7,8 @@ def get_appointments(filters: dict):
     # Excluir canceladas
     qs = qs.exclude(status="CANCELLED")
 
-    if filters.get("date"):
-        qs = qs.filter(scheduled_at__date=filters["date"])
+    if filters.get("scheduled_date"):
+        qs = qs.filter(scheduled_at__date=filters["scheduled_date"])
 
     if filters.get("supplier"):
         qs = qs.filter(supplier=filters["supplier"])

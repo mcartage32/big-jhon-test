@@ -43,7 +43,7 @@ class AppointmentListView(APIView):
 
     def get(self, request):
         filters = {
-            "date": request.query_params.get("date"),
+            "scheduled_date": request.query_params.get("scheduled_date"),
             "supplier": request.query_params.get("supplier"),
             "product_line": request.query_params.get("product_line"),
             "status": request.query_params.get("status"),
