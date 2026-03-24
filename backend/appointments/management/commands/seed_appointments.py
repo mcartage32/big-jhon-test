@@ -13,8 +13,11 @@ class Command(BaseCommand):
     help = "Seed appointments"
 
     def handle(self, *args, **kwargs):
-        users = list(User.objects.all())
+        if Appointment.objects.exists():
+            self.stdout.write(self.style.WARNING("Appointments table is not empty. Seed skipped."))
+            return
 
+        users = list(User.objects.all())
         if not users:
             self.stdout.write(self.style.ERROR("No users found. Run seed_users first"))
             return
