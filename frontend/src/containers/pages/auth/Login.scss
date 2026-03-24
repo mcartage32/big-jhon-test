@@ -1,0 +1,32 @@
+.login-container {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #1677ff, #69b1ff);
+  padding: 16px;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 400px;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.login-title {
+  text-align: center;
+  margin-bottom: 24px !important;
+}
+
+/* Responsive tweaks */
+@media (max-width: 480px) {
+  .login-card {
+    padding: 16px;
+    border-radius: 12px;
+  }
+
+  .login-title {
+    font-size: 20px !important;
+  }
+}
