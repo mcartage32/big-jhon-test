@@ -7,7 +7,8 @@ import {
 } from '@/api/reactQuery'
 import {
   useAppointmentsListQuery,
-  useCreateAppointmentMutation
+  useCreateAppointmentMutation,
+  useDeleteAppointmentMutation
 } from '@/api/reactQuery/appointments'
 import AppointmentsColumns from './columns'
 import CreateAppointmentModal from './CreateAppointmentModal'
@@ -27,7 +28,7 @@ const AppointmentsPage = () => {
   const [openCreateModal, setOpenCreateModal] = useState(false)
   const { mutate: createAppointment, isPending: isPendingCreateAppointment } =
     useCreateAppointmentMutation()
-
+  const deleteAppointment = useDeleteAppointmentMutation()
   const { data, isLoading } = useAppointmentsListQuery(filters)
   const { data: suppliers } = useSuppliersListQuery()
   const { data: productLines } = useProductLinesListQuery()
@@ -131,7 +132,7 @@ const AppointmentsPage = () => {
         </Row>
 
         <Table
-          columns={AppointmentsColumns}
+          columns={AppointmentsColumns(deleteAppointment)}
           dataSource={data?.data || []}
           rowKey="id"
           loading={isLoading}

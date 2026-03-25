@@ -35,3 +35,16 @@ export const useCreateAppointmentMutation = () => {
     }
   })
 }
+
+export const useDeleteAppointmentMutation = () => {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: async (id: string) => {
+      const response = await axiosInstance.delete(ENDPOINTS.APPOINTMENTS_DELETE(id))
+      return response.data
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['appointmentsList'] })
+    }
+  })
+}

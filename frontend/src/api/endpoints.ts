@@ -7,6 +7,7 @@ const ENDPOINTS = {
   APPOINTMENTS_STATUSES: 'appointments/statuses/',
   APPOINTMENTS_LIST: 'appointments/list/',
   APPOINTMENTS_CREATE: 'appointments/',
+  APPOINTMENTS_DELETE: (id: string) => `appointments/${id}/cancel/`,
   ////
   CREATE_USER: 'auth/register',
   FIND_USER_BY_EMAIL: 'auth/find-by-email',
