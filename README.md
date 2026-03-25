@@ -216,4 +216,9 @@ DB_PORT=numero_puerto
 VITE_API_URL=url_del_API
 ```
 
+## 7. Documentación de la API
+
+Una vez iniciado el backend, puedes acceder a la documentación interactiva en:
+
+- **Swagger UI:** [http://localhost:8000/api/docs/](http://localhost:8000/api/docs/)
 
