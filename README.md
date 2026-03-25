@@ -156,7 +156,7 @@ docker compose up --build
 ```
 
 ### Opción 2: Ejecución Local
-#### Backend **(Asegurate previamente que PostgresSQL este corriendo localmente en el puerto 5432)**
+#### Backend **(Nota: asegurate previamente que PostgresSQL este corriendo localmente en el puerto 5432)**
 1. Navega al directorio del backend:
 ```bash
 cd /backend
@@ -182,4 +182,17 @@ uv run python manage.py seed_users
 ```
 ```bash
 uv run python manage.py seed_appointments
+```
+### Frontend
+1. Navega al directorio del frontend:
+```bash
+cd /frontend
+```
+2. Instala dependencias
+```bash
+bun install
+```
+3. Inicia el servidor de desarrollo
+```bash
+bun dev
 ```
