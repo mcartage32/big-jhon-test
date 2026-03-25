@@ -240,3 +240,128 @@ Ubícate en la carpeta del backend y ejecuta:
 ```bash
 uv run python manage.py test appointments
 ```
+
+## 9. Decisiones técnicas y justificaciones relevantes
+
+### 1. Arquitectura tipo DDD ligero (inspiración hexagonal)
+Se organizó el código en capas:
+
+- `domain`: modelos y enums
+- `application`: lógica de negocio (services, validators)
+- `infrastructure`: queries/repositorios
+- `presentation`: serializers, views, urls
+
+**Justificación:**
+- Separa responsabilidades claramente.
+- Facilita escalabilidad y mantenimiento.
+- Evita acoplamiento entre lógica de negocio y framework.
+
+---
+
+### 2. Uso de Custom User Model (email como identificador)
+Se implementó un modelo de usuario personalizado usando email en lugar de username.
+```python
+AUTH_USER_MODEL = "users.User"
+```
+### 3. Autenticación con JWT
+Se implementó autenticación basada en tokens JWT (access y refresh), en lugar de autenticación por sesiones, como tambien la implementación de blacklist de tokens
+
+**Justificación:**
+
+- Permite una autenticación **stateless**, eliminando la necesidad de almacenar sesiones en el servidor.
+- Es ideal para arquitecturas con frontend desacoplado (SPA, mobile apps).
+- Reduce la carga en el backend al no tener que gestionar sesiones activas.
+- El **access token** tiene corta duración, reduciendo el riesgo en caso de compromiso.
+- El **refresh token** permite renovar la sesión sin requerir reautenticación constante.
+- Permite invalidar tokens antes de su expiración (logout seguro).
+- Evita que un refresh token comprometido pueda seguir generando nuevos access tokens.
+- Agrega una capa adicional de control sobre sesiones activas.
+
+En conjunto, esta estrategia balancea seguridad, escalabilidad y experiencia de usuario, alineándose con prácticas modernas en el desarrollo de APIs.
+---
+
+### 4. Validaciones en capa de aplicación
+Las reglas de negocio se implementaron en `services` y `validators`, no en las views.
+
+**Justificación:**
+- Mantiene las views simples y limpias.
+- Centraliza la lógica de negocio.
+- Facilita testing y reutilización del código.
+
+---
+
+### 5. Documentación desacoplada por app (OpenAPI)
+Cada app define su documentación en archivos separados:
+
+```
+users/docs.yaml
+appointments/docs.yaml
+```
+
+**Justificación:**
+- Organización por dominio.
+- Escalable para equipos grandes.
+- Similar a prácticas usadas en entornos profesionales.
+
+---
+
+### 6. Exposición de enums como endpoints (catálogos)
+Se crearon endpoints para listar valores de enums como proveedores, estados y líneas de producto.
+
+**Justificación:**
+- Evita hardcodeo en el frontend.
+- Permite cambios dinámicos desde backend.
+- Mejora desacoplamiento entre frontend y backend.
+
+---
+
+### 8. Uso de PostgreSQL como base de datos
+Se utilizó PostgreSQL como motor de base de datos.
+
+**Justificación:**
+- Por recomendación de la prueba.
+- Mayor robustez y confiabilidad.
+- Mejor manejo de relaciones.
+- Preparado para entornos productivos.
+
+---
+
+### 9. Uso de scripts de seed para datos de prueba
+Se crearon comandos personalizados para poblar la base de datos:
+
+```python
+python manage.py seed_users
+python manage.py seed_appointments
+```
+
+**Justificación:**
+- Permite cargar datos rápidamente.
+- Facilita pruebas funcionales.
+- Cumple con los requisitos de la prueba técnica.
+
+---
+
+### 10. Uso de APITestCase para pruebas
+Se implementaron pruebas usando APITestCase.
+
+**Justificación:**
+- Permite probar endpoints completos (request/response).
+- Valida autenticación y reglas de negocio en conjunto.
+- Es adecuado para APIs REST.
+
+---
+
+### 11. Normalización y validación de fechas
+Se implementó lógica para:
+- evitar fechas en el pasado
+- asignar hora por defecto (8:00 AM)
+- validar consistencia con `delivered_at`
+
+**Justificación:**
+- Garantiza integridad de los datos.
+- Evita inconsistencias en el negocio.
+- Cumple reglas definidas en la prueba.
+
+---
+
+
