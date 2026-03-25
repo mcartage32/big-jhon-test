@@ -196,3 +196,24 @@ bun install
 ```bash
 bun dev
 ```
+## 6. Variables de entorno requeridas
+
+Crea un archivo `.env` en las carpetas respectivas basándote en los ejemplos proporcionados. Tanto la carpeta del backend como la del frontend incluyen un archivo `.env.example` con los valores de referencia de las variables de entorno.
+
+**Backend (`/backend/.env`)**:
+```env
+DB_NAME=nombre_de_tu_base
+DB_USER=usuario
+DB_PASSWORD=contraseña
+DB_HOST=host
+DB_PORT=numero_puerto
+```
+> **Nota:** Si ejecutas el backend desde Docker, el valor de `DB_HOST` debe ser `"db"`.  
+> Si lo ejecutas de manera local, el valor debe ser `"localhost"`.
+
+**Frontend (`/frontend/.env`)**:
+```env
+VITE_API_URL=url_del_API
+```
+
+
