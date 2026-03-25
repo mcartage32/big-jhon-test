@@ -222,3 +222,5 @@ Una vez iniciado el backend, puedes acceder a la documentación interactiva en:
 
 - **Swagger UI:** [http://localhost:8000/api/docs/](http://localhost:8000/api/docs/)
 
+## 8. Cómo correr las pruebas unitarias
+
