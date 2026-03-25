@@ -1,50 +1,109 @@
-﻿# Big-Jhon-Test
+﻿# Big-Jhon-Test - Sistema de Gestión de Citas de Entrega
 
-## General Considerations
+## 1. Descripción General
 
-1. The frontend will run by default on port 5173 and the backend API will run on port 3000. Make sure you have these ports free or if you wish you can change these ports in the respective files.
+Desarrollo de una aplicación web fullstack para la gestión de citas de entrega de mercancía en una empresa de retail textil. La solución permite el registro, seguimiento y reporte de indicadores clave, aplicando una arquitectura desacoplada y robusta.
 
-Before installing this project, you need to install the following dependencies:
+## 2. Arquitectura del Proyecto
 
-1. **MySQL 9.0.1** or any later version.
-2. **Node.js 22.13.1** or any later version.
+El sistema sigue principios de **Clean Architecture** y **Diseño Orientado a Dominios (DDD)**, asegurando que la lógica de negocio sea independiente de los detalles de implementación.
 
-**Note:** To run this project, you must ensure that MySQL is running on port 3306, the root user is "root", and the corresponding password is "root". You must also create an empty database with the name "domina_test". However, if you want to change the database configuration, remember to modify the file `/backend/app.module.ts` so that the REST API connects correctly with the database.
+### Diagrama de Arquitectura (ASCII)
 
-## Dependencies used
+```text
+      +-------------------------------------------------------------+
+      |                       USUARIO / BROWSER                     |
+      +------------------------------+------------------------------+
+                                     |
+                                     v
+      +-------------------------------------------------------------+
+      |                 FRONTEND (React + Vite + Bun)               |
+      |  +------------+      +------------+      +---------------+  |
+      |  | Components | <--> |   Hooks    | <--> | API (Axios/RQ)|  |
+      |  +------------+      +------------+      +---------------+  |
+      +------------------------------+------------------------------+
+                                     | (REST API / JWT)
+                                     v
+      +-------------------------------------------------------------+
+      |               BACKEND (Django REST Framework)               |
+      |  +-------------------------------------------------------+  |
+      |  | Presentation (Views, Serializers, Endpoints)          |  |
+      |  +---------------------------+---------------------------+  |
+      |                              |                              |
+      |  +---------------------------v---------------------------+  |
+      |  | Application (Use Cases, Services)                     |  |
+      |  +---------------------------+---------------------------+  |
+      |                              |                              |
+      |  +---------------------------v---------------------------+  |
+      |  | Domain (Entities, Business Logic)                     |  |
+      |  +---------------------------+---------------------------+  |
+      |                              |                              |
+      |  +---------------------------v---------------------------+  |
+      |  | Infrastructure (PostgreSQL, ORM, Raw SQL)             |  |
+      |  +-------------------------------------------------------+  |
+      +-------------------------------------------------------------+
+```
 
-### Backend
+### Arquitectura
 
-1. **npm** 11.0
-2. **nestjs** 11.0.1
-3. **mysql2** 3.12.0
-4. **reflect-metadata** 0.2.2
-5. **rxjs** 7.8.1
-6. **typeorm** 0.3.20
-
-### Frontend
-
-1. **npm** 11.0
-2. **react** 18.3.1
-3. **react-dom** 18.3.1
-4. **react-router-dom** 7.1.3
-5. **material ui** 6.4.1
-6. **material ui icons** 6.4.1
-7. **axios** 1.7.9
-8. **react-query** 5.64.2
-9. **react-toastify** 11.0.3
-10. **formik** 2.4.6
-11. **lodash** 4.17.21
-12. **deep-object-diff** 1.1.9
-
-## Installation
-
-### On Linux/macOS
-
-Navigate to the root of the project, give execution permissions to the **setup.sh** file and execute it.
-
-### On Windows
-
-Option 1: You can open the project with GitBash and, from the root of the project, run the **setup.sh** file.
-
-Option 2: Open a terminal located in the **frontend** folder and another in the **backend** folder, and run both projects using npm: for **backend** run **npm install** first and then **npm run start:dev**. And for **frontend** run **npm install** first and then **npm run dev**.
+```text
+BIG-JHON-TEST/
+├── backend/
+│   ├── appointments/           # Módulo de Citas (DDD)
+│   │   ├── application/        # Casos de uso
+│   │   ├── domain/             # Entidades y lógica de negocio
+│   │   ├── infrastructure/     # Repositorios y persistencia
+│   │   ├── management/         # Comandos de gestión (Seeders)
+│   │   ├── migrations/         # Migraciones de BD
+│   │   ├── presentation/       # API Views y Serializers
+│   │   ├── tests/              # Pruebas unitarias
+│   │   ├── admin.py
+│   │   ├── apps.py
+│   │   ├── docs.yaml           # Documentación OpenAPI específica
+│   │   └── models.py
+│   ├── config/                 # Configuración del core de Django
+│   ├── users/                  # Módulo de Autenticación y Usuarios
+│   │   ├── application/
+│   │   ├── domain/
+│   │   ├── infrastructure/
+│   │   ├── management/
+│   │   ├── migrations/
+│   │   ├── presentation/
+│   │   ├── admin.py
+│   │   ├── apps.py
+│   │   ├── docs.yaml
+│   │   └── models.py
+│   ├── dockerfile
+│   ├── manage.py
+│   ├── pyproject.toml          # Configuración de dependencias (uv)
+│   ├── requirements.txt
+│   └── uv.lock
+├── frontend/
+│   ├── public/                 # Activos estáticos
+│   ├── src/
+│   │   ├── api/                # Cliente Axios y React Query
+│   │   │   ├── reactQuery/
+│   │   │   ├── axiosConfig.ts
+│   │   │   └── endpoints.ts
+│   │   ├── components/         # Componentes UI reutilizables
+│   │   ├── constants/          # Enums y rutas constantes
+│   │   ├── containers/         # Layouts y Páginas (Vistas)
+│   │   │   ├── layout/
+│   │   │   └── pages/
+│   │   ├── hooks/              # Hooks personalizados (useAuth)
+│   │   ├── interfaces/         # Definiciones de TypeScript
+│   │   ├── router/             # Configuración de rutas y Guards
+│   │   │   ├── PrivateRoute.tsx
+│   │   │   └── routes.tsx
+│   │   ├── main.scss           # Estilos globales
+│   │   └── main.tsx            # Punto de entrada
+│   ├── bun.lock                # Lockfile de Bun
+│   ├── dockerfile
+│   ├── eslint.config.js        # Linter de Frontend
+│   ├── index.html
+│   ├── package.json
+│   ├── tsconfig.json           # Configuración de TypeScript
+│   └── vite.config.ts
+├── docker-compose.yml          # Orquestación de servicios
+└── README.md
+```
