@@ -369,4 +369,25 @@ Se implementó lógica para:
 
 ---
 
+### 12. Uso de Bun y uv
+Se utilizaron herramientas modernas como Bun (para el frontend) y uv (para la gestión de dependencias en Python).
+
+**Justificación:**
+
+- **Uso de uv (Python):**
+  - Permite una instalación de dependencias significativamente más rápida que pip.
+  - Mejora la experiencia de desarrollo al reducir tiempos de setup.
+  - Facilita la creación y gestión de entornos virtuales de forma eficiente.
+  - Se utilizó principalmente en desarrollo local para optimizar productividad.
+
+- **Uso de Bun (Frontend):**
+  - Ofrece un gestor de paquetes y runtime más rápido que Node.js tradicional.
+  - Reduce tiempos de instalación y ejecución del frontend.
+  - Mejora la experiencia del desarrollador en proyectos modernos.
+
+- **Separación de responsabilidades (uv vs Docker):**
+  - uv se utiliza en desarrollo local.
+  - En Docker se utilizan herramientas más estándar (pip) para evitar recreación de entornos en runtime y asegurar estabilidad.
+
+
 
