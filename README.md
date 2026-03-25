@@ -148,6 +148,9 @@ El diagrama se encuentra disponible en la raíz del proyecto como `Diagrama-MER.
 
 ## 5. Instalación y Ejecución
 
+> **Nota:** Luego de clonar el repositorio, se debe crear los respectivos archivos .env en las carpetas backend y frontend, con los respectivos valores.
+> En el backend si se ejecuta con docker DB_HOST debe tener el valor de "db", si es de manera local su valor sera "localhost"
+
 ### Opción 1: Con Docker (Recomendado)
 Desde la raíz del proyecto, ejecuta el siguiente comando para levantar la base de datos, el backend y el frontend automáticamente:
 
