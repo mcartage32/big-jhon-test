@@ -8,7 +8,7 @@ Desarrollo de una aplicación web fullstack para la gestión de citas de entrega
 
 El sistema sigue principios de **Clean Architecture** y **Diseño Orientado a Dominios (DDD)**, asegurando que la lógica de negocio sea independiente de los detalles de implementación.
 
-### Diagrama de Arquitectura (ASCII)
+### Diagrama de Arquitectura
 
 ```text
       +-------------------------------------------------------------+
@@ -44,7 +44,7 @@ El sistema sigue principios de **Clean Architecture** y **Diseño Orientado a Do
       +-------------------------------------------------------------+
 ```
 
-### Arquitectura
+### Estructura de carpetas y archivos
 
 ```text
 BIG-JHON-TEST/
@@ -107,3 +107,38 @@ BIG-JHON-TEST/
 ├── docker-compose.yml          # Orquestación de servicios
 └── README.md
 ```
+
+## 3. Diagrama Entidad-Relación (MER)
+El diagrama se encuentra disponible en la raíz del proyecto como `Diagrama-MER.png`. Cabe resaltar que dicho MER solo tiene en cuenta las tablas usadas en el proyecto. Al crear la base de datos, aparecen otras tablas que Django crea por defecto pero no son usadas en esta solución.
+
+
+## 4. Consideraciones Generales
+- El frontend corre por defecto en el puerto **5173** y el backend en el puerto **8000**.
+
+**Requisitos previos:**
+- Docker y Docker Compose (recomendado para ejecución rápida).
+- Python 3.12+ y `uv` (para ejecución local del backend).
+- Node.js 20+ o Bun (para ejecución local del frontend).
+
+## 5. Dependencias Utilizadas
+
+### Backend
+- **Django & Django REST Framework**: Framework principal y toolkit de API.
+- **PostgreSQL**: Base de datos relacional.
+- **uv**: Gestor de paquetes y entorno de Python de alto rendimiento.
+- **Pytest / Django Test**: Para pruebas unitarias.
+
+### Frontend
+- **React 18 & Vite**: Librería de UI y herramienta de construcción.
+- **Bun**: Tiempo de ejecución y gestor de paquetes.
+- **React Query (TanStack)**: Gestión de estado asíncrono y caché de API.
+- **Axios**: Cliente HTTP para comunicación con el backend.
+- **Material UI / Tailwind**: Framework de estilos para diseño responsive.
+
+## 6. Instalación y Ejecución
+
+### Opción 1: Con Docker (Recomendado)
+Desde la raíz del proyecto, ejecuta el siguiente comando para levantar la base de datos, el backend y el frontend automáticamente:
+
+```bash
+docker compose up --build
