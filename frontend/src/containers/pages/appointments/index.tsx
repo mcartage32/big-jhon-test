@@ -5,10 +5,15 @@ import {
   useProductLinesListQuery,
   useAppointmentsStatusesListQuery
 } from '@/api/reactQuery'
-import { useAppointmentsListQuery } from '@/api/reactQuery/appointments'
+import {
+  useAppointmentsListQuery,
+  useCreateAppointmentMutation
+} from '@/api/reactQuery/appointments'
 import AppointmentsColumns from './columns'
+import CreateAppointmentModal from './CreateAppointmentModal'
 import dayjs from 'dayjs'
 import 'dayjs/locale/es'
+import { createNotification } from '@/components/NotificationCustom'
 
 dayjs.locale('es')
 const { Title } = Typography
@@ -18,6 +23,10 @@ const AppointmentsPage = () => {
     page: 1,
     limit: 5
   })
+
+  const [openCreateModal, setOpenCreateModal] = useState(false)
+  const { mutate: createAppointment, isPending: isPendingCreateAppointment } =
+    useCreateAppointmentMutation()
 
   const { data, isLoading } = useAppointmentsListQuery(filters)
   const { data: suppliers } = useSuppliersListQuery()
@@ -110,7 +119,12 @@ const AppointmentsPage = () => {
           </Col>
 
           <Col xs={24} md={6} style={{ textAlign: 'right' }}>
-            <Button type="primary" size="large" style={{ width: '100%' }}>
+            <Button
+              type="primary"
+              size="large"
+              style={{ width: '100%' }}
+              onClick={() => setOpenCreateModal(true)}
+            >
               Crear cita
             </Button>
           </Col>
@@ -135,6 +149,28 @@ const AppointmentsPage = () => {
           scroll={{ x: 'max-content' }}
         />
       </Card>
+      <CreateAppointmentModal
+        open={openCreateModal}
+        onClose={() => setOpenCreateModal(false)}
+        onSubmit={(values) => {
+          createAppointment(values, {
+            onSuccess: () => {
+              setOpenCreateModal(false)
+              createNotification.success({
+                message: 'Cita creada',
+                description: 'La cita ha sido creada exitosamente'
+              })
+            },
+            onError: (_error: any) => {
+              createNotification.error({
+                message: 'Error',
+                description: 'Error al crear la cita, por favor verifique los campos ingresados.'
+              })
+            }
+          })
+        }}
+        confirmLoading={isPendingCreateAppointment}
+      />
     </>
   )
 }

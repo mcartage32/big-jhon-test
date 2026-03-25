@@ -1,7 +1,11 @@
-import { useQuery, keepPreviousData } from '@tanstack/react-query'
+import { useQuery, keepPreviousData, useMutation, useQueryClient } from '@tanstack/react-query'
 import axiosInstance from '../axiosConfig'
 import ENDPOINTS from '../endpoints'
-import type { IAppointmentsListResponse, IAppointmentsFilters } from '@/interfaces'
+import type {
+  IAppointmentsListResponse,
+  IAppointmentsFilters,
+  ICreateAppointmentPayload
+} from '@/interfaces'
 
 export const useAppointmentsListQuery = (params?: IAppointmentsFilters) => {
   return useQuery({
@@ -16,5 +20,18 @@ export const useAppointmentsListQuery = (params?: IAppointmentsFilters) => {
       return response.data
     },
     placeholderData: keepPreviousData
+  })
+}
+
+export const useCreateAppointmentMutation = () => {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: async (payload: ICreateAppointmentPayload) => {
+      const response = await axiosInstance.post(ENDPOINTS.APPOINTMENTS_CREATE, payload)
+      return response.data
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['appointmentsList'] })
+    }
   })
 }

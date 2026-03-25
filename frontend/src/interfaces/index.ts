@@ -46,3 +46,12 @@ export interface IAppointmentsFilters {
   status?: AppointmentStatus
   scheduled_date?: string // formato YYYY-MM-DD
 }
+
+export interface ICreateAppointmentPayload {
+  scheduled_at: string
+  supplier: string
+  product_line: string
+  status: string
+  delivered_at?: string | null
+  observations?: string
+}

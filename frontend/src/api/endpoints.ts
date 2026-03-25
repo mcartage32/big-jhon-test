@@ -6,6 +6,7 @@ const ENDPOINTS = {
   PRODUCT_LINES: 'appointments/product-lines/',
   APPOINTMENTS_STATUSES: 'appointments/statuses/',
   APPOINTMENTS_LIST: 'appointments/list/',
+  APPOINTMENTS_CREATE: 'appointments/',
   ////
   CREATE_USER: 'auth/register',
   FIND_USER_BY_EMAIL: 'auth/find-by-email',
