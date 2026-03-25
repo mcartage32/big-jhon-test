@@ -1,0 +1,42 @@
+.dashboard {
+  padding: 24px;
+
+  &__title {
+    margin-bottom: 16px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__row {
+    width: 100%;
+  }
+
+  &__card {
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.48);
+    min-width: 220px;
+  }
+
+  &__card-content {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  &__icon {
+    font-size: 24px;
+    padding: 10px;
+    border-radius: 50%;
+  }
+
+  &__today {
+    margin-top: 24px;
+  }
+}
+
+@media (max-width: 480px) {
+  .dashboard {
+    padding: 12px;
+  }
+}

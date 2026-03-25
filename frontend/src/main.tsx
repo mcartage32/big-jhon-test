@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { NotificationProvider } from './components/NotificationCustom.tsx'
 import Router from './router'
+import './main.scss'
 
 const queryClient = new QueryClient()
 

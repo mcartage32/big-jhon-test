@@ -1,10 +1,11 @@
 import { Menu } from 'antd'
-import { UserOutlined } from '@ant-design/icons'
-import { TbZoomMoney } from 'react-icons/tb'
-import { useNavigate } from 'react-router-dom'
-import { TfiEmail } from 'react-icons/tfi'
-import { PRIVATE_ROUTE } from '@/constants'
 import { useAuth } from '@/hooks/useAuth'
+import { VscDashboard } from 'react-icons/vsc'
+import { CiCalendarDate } from 'react-icons/ci'
+import { HiOutlineDocumentReport } from 'react-icons/hi'
+import { TbLogout } from 'react-icons/tb'
+import { useNavigate } from 'react-router-dom'
+import { PRIVATE_ROUTE } from '@/constants'
 
 interface Props {
   selectedKey: string
@@ -36,29 +37,32 @@ export default function MenuSider({ selectedKey, setSelectedKey }: Props) {
 
   return (
     <Menu
-      theme="dark"
       mode="inline"
+      style={{
+        background: 'transparent',
+        borderRight: 'none'
+      }}
       selectedKeys={[selectedKey]}
       onClick={handleMenuClick}
       items={[
         {
           key: '1',
-          icon: <UserOutlined size={22} />,
+          icon: <VscDashboard size={22} />,
           label: 'Dashboard'
         },
         {
           key: '2',
-          icon: <TbZoomMoney size={22} />,
+          icon: <CiCalendarDate size={22} />,
           label: 'Citas'
         },
         {
           key: '3',
-          icon: <TfiEmail size={18} />,
+          icon: <HiOutlineDocumentReport size={18} />,
           label: 'Reportes'
         },
         {
           key: '4',
-          icon: <TfiEmail size={18} />,
+          icon: <TbLogout size={18} />,
           label: 'Cerrar sesión'
         }
       ]}

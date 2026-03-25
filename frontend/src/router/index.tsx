@@ -13,7 +13,6 @@ const Router = (): JSX.Element => {
           {publicRoutes.map((route) => (
             <Route Component={route.component} key={route.path} path={route.path} />
           ))}
-
           <Route element={<PrivateRoute />}>
             <Route element={<Home />} path="/">
               {privateRoutes.map((route) => (
@@ -29,7 +28,7 @@ const Router = (): JSX.Element => {
               ))}
             </Route>
           </Route>
-          <Route path="*" element={<div>Not Found</div>} />
+          <Route path="*" element={<div>Pagina no encontrada</div>} />
         </Routes>
       </Suspense>
     </BrowserRouter>

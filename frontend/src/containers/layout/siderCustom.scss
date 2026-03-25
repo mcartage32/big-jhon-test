@@ -1,0 +1,39 @@
+.ant-menu {
+  background: transparent !important;
+}
+
+// Items
+.ant-menu-item {
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  margin: 6px 10px;
+  transition: all 0.2s ease;
+}
+
+.ant-menu-item:hover {
+  background: rgba(255, 255, 255, 0.12) !important;
+  border-color: rgba(255, 255, 255, 0.35);
+  color: #fff !important;
+}
+
+.ant-menu-item-selected {
+  background: rgba(255, 255, 255, 0.2) !important;
+  border-color: #ffffff;
+  color: #fff !important;
+}
+
+// Iconos
+.ant-menu-item .anticon,
+.ant-menu-item svg {
+  color: #fff !important;
+}
+
+// Quitar fondo azul default de Antd
+.ant-menu-dark .ant-menu-item-selected {
+  background-color: transparent !important;
+}
+
+.sidebar-toggle:hover {
+  background: rgba(255, 255, 255, 0.2);
+}

@@ -1,5 +1,5 @@
 import { Layout, theme } from 'antd'
-import { Outlet } from 'react-router-dom'
+import { Outlet, useLocation } from 'react-router-dom'
 
 const { Content } = Layout
 
@@ -7,23 +7,25 @@ export default function ContentCustom() {
   const {
     token: { colorBgContainer, borderRadiusLG }
   } = theme.useToken()
+  const location = useLocation()
+  const isHome = location.pathname === '/'
+
   return (
     <Content
       style={{
-        height: 'calc(100vh - 64px)', // menos el header
+        height: '100dvh',
         overflow: 'hidden'
       }}
     >
       <div
         style={{
           height: '100%',
-          overflowY: 'auto',
-          overflowX: 'hidden',
           padding: 24,
           background: colorBgContainer,
           borderRadius: borderRadiusLG
         }}
       >
+        {isHome && <div>Bienvenido</div>}
         <Outlet />
       </div>
     </Content>
