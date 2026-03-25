@@ -224,3 +224,19 @@ Una vez iniciado el backend, puedes acceder a la documentación interactiva en:
 
 ## 8. Cómo correr las pruebas unitarias
 
+Las pruebas unitarias se realizaron en el backend para el módulo de citas. Se utilizó `APITestCase` para validar el flujo completo.
+
+### Ejecutar pruebas con Docker
+
+Desde la raíz del proyecto ejecuta:
+
+```bash
+docker compose exec backend python manage.py test appointments
+```
+### Ejecutar pruebas de manera local
+
+Ubícate en la carpeta del backend y ejecuta:
+
+```bash
+uv run python manage.py test appointments
+```
