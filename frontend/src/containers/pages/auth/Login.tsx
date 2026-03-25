@@ -1,7 +1,6 @@
 import { Form, Input, Button, Card, Typography } from 'antd'
 import { MailOutlined, LockOutlined } from '@ant-design/icons'
-import { Navigate, useNavigate } from 'react-router-dom'
-import { PRIVATE_ROUTE } from '@/constants'
+import { useAuth } from '@/hooks/useAuth'
 import './Login.scss'
 
 const { Title } = Typography
@@ -11,20 +10,11 @@ type LoginFormValues = {
   password: string
 }
 
-const TOKEN =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzc0Mzc3NzUzLCJpYXQiOjE3NzQzNzQxNTMsImp0aSI6ImVlMTI2ZGI1NDRlOTRhNGQ4ZDQ2MjBhZjc5OWZiYWRjIiwidXNlcl9pZCI6IjEifQ.uMF3U4xY7z-tnOlIlxlqo60E70MsYos1j0rb2AG6mGE'
-
 const Login = () => {
-  const navigate = useNavigate()
-  if (sessionStorage.getItem('access_token')) {
-    return <Navigate to={PRIVATE_ROUTE.HOME} replace />
-  }
+  const { login } = useAuth()
 
   const onFinish = (values: LoginFormValues) => {
-    console.log('Login data:', values)
-    sessionStorage.setItem('access_token', TOKEN)
-    console.log('Token guardado en sessionStorage')
-    navigate(PRIVATE_ROUTE.HOME)
+    login(values)
   }
 
   return (

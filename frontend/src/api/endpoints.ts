@@ -1,6 +1,6 @@
 const ENDPOINTS = {
-  PROSPECT_DETAIL: (id: number) => `prospects/${id}`,
-  LOGIN: 'auth/login',
+  LOGIN: 'users/login/',
+  LOGOUT: 'users/logout/',
   CREATE_USER: 'auth/register',
   FIND_USER_BY_EMAIL: 'auth/find-by-email',
   DEPARTMENTS: 'departments',

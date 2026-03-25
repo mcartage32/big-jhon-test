@@ -4,6 +4,7 @@ import { TbZoomMoney } from 'react-icons/tb'
 import { useNavigate } from 'react-router-dom'
 import { TfiEmail } from 'react-icons/tfi'
 import { PRIVATE_ROUTE } from '@/constants'
+import { useAuth } from '@/hooks/useAuth'
 
 interface Props {
   selectedKey: string
@@ -12,21 +13,23 @@ interface Props {
 
 export default function MenuSider({ selectedKey, setSelectedKey }: Props) {
   const navigate = useNavigate()
+  const refresh_token = sessionStorage.getItem('refresh_token')
+  const { logout } = useAuth()
 
   const handleMenuClick = ({ key }: { key: string }) => {
     setSelectedKey(key)
     switch (key) {
       case '1':
-        navigate(PRIVATE_ROUTE.CONFIGURATION)
-        break
-      case '2':
         navigate(PRIVATE_ROUTE.DASHBOARD)
         break
+      case '2':
+        navigate(PRIVATE_ROUTE.APPOINTMENTS)
+        break
       case '3':
-        navigate(PRIVATE_ROUTE.CANDIDATES_DOCUMENTS)
+        navigate(PRIVATE_ROUTE.REPORTS)
         break
       case '4':
-        navigate(PRIVATE_ROUTE.HOME)
+        logout(refresh_token || '')
         break
     }
   }
@@ -41,17 +44,22 @@ export default function MenuSider({ selectedKey, setSelectedKey }: Props) {
         {
           key: '1',
           icon: <UserOutlined size={22} />,
-          label: 'Actualizar Proveedores'
+          label: 'Dashboard'
         },
         {
           key: '2',
           icon: <TbZoomMoney size={22} />,
-          label: 'Subir pagos'
+          label: 'Citas'
         },
         {
           key: '3',
           icon: <TfiEmail size={18} />,
-          label: 'Historial envio emails'
+          label: 'Reportes'
+        },
+        {
+          key: '4',
+          icon: <TfiEmail size={18} />,
+          label: 'Cerrar sesión'
         }
       ]}
     />

@@ -2,6 +2,9 @@ import { PRIVATE_ROUTE, PUBLIC_ROUTE } from '@/constants'
 import { lazy } from 'react'
 
 const Login = lazy(() => import('@/containers/pages/auth/Login'))
+const Dashboard = lazy(() => import('@/containers/pages/dashboard'))
+const Appointments = lazy(() => import('@/containers/pages/appointments'))
+const Reports = lazy(() => import('@/containers/pages/reports'))
 
 // Rutas publicas
 export const publicRoutes: { component: React.FC; path: string }[] = [
@@ -9,14 +12,6 @@ export const publicRoutes: { component: React.FC; path: string }[] = [
     path: PUBLIC_ROUTE.LOGIN,
     component: Login
   }
-  //   {
-  //     path: PUBLIC_ROUTE.PROSPECT_REGISTRATION,
-  //     component: ProspectRegistrationPage,
-  //   },
-  //   {
-  //     path: PUBLIC_ROUTE.FORGOT_PASSWORD,
-  //     component: ForgotPassword,
-  //   },
 ]
 
 // Rutas privadas
@@ -28,6 +23,18 @@ export const privateRoutes: {
     component: React.FC
   }[]
 }[] = [
+  {
+    path: PRIVATE_ROUTE.DASHBOARD,
+    component: Dashboard
+  },
+  {
+    path: PRIVATE_ROUTE.APPOINTMENTS,
+    component: Appointments
+  },
+  {
+    path: PRIVATE_ROUTE.REPORTS,
+    component: Reports
+  }
   //   {
   //     path: PRIVATE_ROUTE.PROSPECTS,
   //     component: ProspectManagement,
@@ -42,10 +49,6 @@ export const privateRoutes: {
   //       },
   //     ],
   //   },
-  {
-    path: PRIVATE_ROUTE.DASHBOARD,
-    component: () => <div>Dashboard</div>
-  }
   //   {
   //     path: PRIVATE_ROUTE.CONFIGURATION,
   //     component: ConfigurationComponent,
