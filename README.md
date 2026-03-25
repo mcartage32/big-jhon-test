@@ -283,6 +283,7 @@ Se implementó autenticación basada en tokens JWT (access y refresh), en lugar 
 - Agrega una capa adicional de control sobre sesiones activas.
 
 En conjunto, esta estrategia balancea seguridad, escalabilidad y experiencia de usuario, alineándose con prácticas modernas en el desarrollo de APIs.
+
 ---
 
 ### 4. Validaciones en capa de aplicación
@@ -389,5 +390,88 @@ Se utilizaron herramientas modernas como Bun (para el frontend) y uv (para la ge
   - uv se utiliza en desarrollo local.
   - En Docker se utilizan herramientas más estándar (pip) para evitar recreación de entornos en runtime y asegurar estabilidad.
 
+## 10. Supuestos asumidos durante el desarrollo
 
+Durante el desarrollo de la solución se asumieron las siguientes condiciones:
 
+---
+
+### 1. Credenciales de usuarios de prueba
+Se incluyeron usuarios predefinidos mediante scripts de seed para facilitar pruebas:
+
+```
+admin@test.co
+admin123
+
+user1@test.co
+user123
+
+user2@test.co
+user123
+```
+---
+
+### 2. Entorno de desarrollo
+Se asume que el entorno cuenta con:
+
+- Python 3.12+
+- PostgreSQL
+- Docker y Docker Compose
+- Bun (para frontend)
+- uv (gestión de dependencias en Python)
+
+---
+
+### 3. Uso de Docker como entorno principal
+Se asume que el proyecto será ejecutado mediante Docker.
+
+---
+
+### 4. Manejo de zona horaria
+Se asume uso de zona horaria de Colombia (UTC-5).
+
+---
+
+### 5. Reglas de negocio definidas
+Se implementaron según lo especificado en la prueba:
+
+- No se permiten citas en el pasado.
+- El estado "Entregada" requiere `delivered_at`.
+- No se permite cambiar de "Entregada" a "Programada".
+- Las citas canceladas no aparecen en listados.
+
+---
+
+### 6. Autenticación requerida
+Todos los endpoints (excepto login y registro) requieren autenticación.
+
+---
+
+### 7. Volumen de datos
+Se generan datos de prueba limitados:
+
+- 3 usuarios
+- 20 citas
+- No se requiere optimización para grandes volúmenes de datos.
+- La paginación implementada es suficiente para el alcance de la prueba.
+
+---
+
+### 8. Uso de enums como catálogo cerrado
+
+- Los valores de proveedor, estado y línea de producto están definidos como enums.
+- No se requiere gestión dinámica (CRUD) de estos valores.
+- Son catálogos fijos definidos por el negocio.
+
+---
+
+### 9. Roles y permisos de usuarios
+No se implementó un sistema de roles o permisos diferenciados.
+
+**Supuesto:**
+- Todos los usuarios autenticados tienen acceso a las mismas funcionalidades.
+- No se requiere control de acceso granular (por ejemplo, restricciones por rol como admin o usuario).
+- Esta decisión se tomó para simplificar la implementación y enfocar el desarrollo en la lógica principal del negocio.
+
+**Nota:**
+- En caso de requerirse, este módulo puede extenderse fácilmente utilizando el sistema de permisos de Django o librerías como django-guardian.
