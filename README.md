@@ -183,6 +183,11 @@ uv run python manage.py seed_users
 ```bash
 uv run python manage.py seed_appointments
 ```
+5. Ejecuta el servidor
+```bash
+uv run python manage.py runserver
+```
+
 ### Frontend
 1. Navega al directorio del frontend:
 ```bash
