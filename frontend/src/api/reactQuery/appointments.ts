@@ -4,7 +4,8 @@ import ENDPOINTS from '../endpoints'
 import type {
   IAppointmentsListResponse,
   IAppointmentsFilters,
-  ICreateAppointmentPayload
+  ICreateAppointmentPayload,
+  IAppointment
 } from '@/interfaces'
 
 export const useAppointmentsListQuery = (params?: IAppointmentsFilters) => {
@@ -45,6 +46,39 @@ export const useDeleteAppointmentMutation = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['appointmentsList'] })
+    }
+  })
+}
+
+export const useAppointmentDetailQuery = (id: string) => {
+  return useQuery({
+    queryKey: ['appointmentDetail', id],
+    queryFn: async (): Promise<IAppointment> => {
+      const response = await axiosInstance.get<IAppointment>(ENDPOINTS.APPOINTMENTS_DETAIL(id))
+      return response.data
+    }
+  })
+}
+
+export const useUpdateAppointmentMutation = () => {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: async ({
+      id,
+      payload
+    }: {
+      id: string
+      payload: Partial<ICreateAppointmentPayload>
+    }) => {
+      const response = await axiosInstance.patch<IAppointment>(
+        ENDPOINTS.APPOINTMENTS_UPDATE(id),
+        payload
+      )
+      return response.data
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['appointmentsList'] })
+      queryClient.invalidateQueries({ queryKey: ['appointmentDetail'] })
     }
   })
 }

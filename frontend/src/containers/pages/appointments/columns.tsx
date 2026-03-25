@@ -9,7 +9,8 @@ import { createNotification } from '@/components/NotificationCustom'
 dayjs.locale('es')
 
 const AppointmentsColumns = (
-  deleteAppointment: ReturnType<typeof useDeleteAppointmentMutation>
+  deleteAppointment: ReturnType<typeof useDeleteAppointmentMutation>,
+  onEdit?: (appointment: IAppointment) => void
 ): ColumnsType<IAppointment> => [
   {
     title: 'Producto',
@@ -39,14 +40,14 @@ const AppointmentsColumns = (
     render: (_: any, record: IAppointment) => (
       <Space size="middle">
         {/* Editar */}
-        <Tooltip title="Editar">
-          <EditOutlined
-            style={{ color: '#1677ff', cursor: 'pointer', fontSize: 18 }}
-            onClick={() => {
-              console.log('Editar', record.id)
-            }}
-          />
-        </Tooltip>
+        {onEdit && (
+          <Tooltip title="Editar">
+            <EditOutlined
+              style={{ color: '#1677ff', cursor: 'pointer', fontSize: 18 }}
+              onClick={() => onEdit(record)}
+            />
+          </Tooltip>
+        )}
 
         {/* Cancelar */}
         <Popconfirm
@@ -56,13 +57,13 @@ const AppointmentsColumns = (
             deleteAppointment.mutate(record.id, {
               onSuccess: () => {
                 createNotification.success({
-                  message: 'Cita cancelada',
+                  title: 'Cita cancelada',
                   description: 'La cita ha sido cancelada exitosamente'
                 })
               },
               onError: (_error: any) => {
                 createNotification.error({
-                  message: 'Error',
+                  title: 'Error',
                   description: 'Error al cancelar la cita, por favor intente nuevamente.'
                 })
               }

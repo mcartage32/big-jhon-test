@@ -20,7 +20,7 @@ export const useAuth = () => {
       },
       onError: (_error) => {
         createNotification.error({
-          message: 'Error de autenticación',
+          title: 'Error de autenticación',
           description: 'Email o contraseña incorrectos. Por favor, inténtalo de nuevo.'
         })
       }
@@ -41,7 +41,7 @@ export const useAuth = () => {
       },
       onError: () => {
         createNotification.error({
-          message: 'Error al cerrar sesión',
+          title: 'Error al cerrar sesión',
           description: 'No se pudo cerrar sesión correctamente. Por favor, inténtalo de nuevo.'
         })
       }

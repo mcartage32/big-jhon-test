@@ -8,13 +8,15 @@ import {
 import {
   useAppointmentsListQuery,
   useCreateAppointmentMutation,
-  useDeleteAppointmentMutation
+  useDeleteAppointmentMutation,
+  useUpdateAppointmentMutation
 } from '@/api/reactQuery/appointments'
 import AppointmentsColumns from './columns'
 import CreateAppointmentModal from './CreateAppointmentModal'
 import dayjs from 'dayjs'
 import 'dayjs/locale/es'
 import { createNotification } from '@/components/NotificationCustom'
+import UpdateAppointmentModal from './UpdateAppointmentModal'
 
 dayjs.locale('es')
 const { Title } = Typography
@@ -28,6 +30,10 @@ const AppointmentsPage = () => {
   const [openCreateModal, setOpenCreateModal] = useState(false)
   const { mutate: createAppointment, isPending: isPendingCreateAppointment } =
     useCreateAppointmentMutation()
+  const [openUpdateModal, setOpenUpdateModal] = useState(false)
+  const [selectedAppointment, setSelectedAppointment] = useState<any>(null)
+  const { mutate: updateAppointment, isPending: isPendingUpdateAppointment } =
+    useUpdateAppointmentMutation()
   const deleteAppointment = useDeleteAppointmentMutation()
   const { data, isLoading } = useAppointmentsListQuery(filters)
   const { data: suppliers } = useSuppliersListQuery()
@@ -132,7 +138,10 @@ const AppointmentsPage = () => {
         </Row>
 
         <Table
-          columns={AppointmentsColumns(deleteAppointment)}
+          columns={AppointmentsColumns(deleteAppointment, (appointment) => {
+            setSelectedAppointment(appointment)
+            setOpenUpdateModal(true)
+          })}
           dataSource={data?.data || []}
           rowKey="id"
           loading={isLoading}
@@ -158,19 +167,44 @@ const AppointmentsPage = () => {
             onSuccess: () => {
               setOpenCreateModal(false)
               createNotification.success({
-                message: 'Cita creada',
+                title: 'Cita creada',
                 description: 'La cita ha sido creada exitosamente'
               })
             },
             onError: (_error: any) => {
               createNotification.error({
-                message: 'Error',
+                title: 'Error',
                 description: 'Error al crear la cita, por favor verifique los campos ingresados.'
               })
             }
           })
         }}
         confirmLoading={isPendingCreateAppointment}
+      />
+      <UpdateAppointmentModal
+        open={openUpdateModal}
+        onClose={() => setOpenUpdateModal(false)}
+        appointment={selectedAppointment}
+        onSubmit={(values) =>
+          updateAppointment(
+            { id: selectedAppointment.id, payload: values },
+            {
+              onSuccess: () => {
+                setOpenUpdateModal(false)
+                createNotification.success({
+                  title: 'Cita actualizada',
+                  description: 'La cita ha sido actualizada exitosamente'
+                })
+              },
+              onError: () =>
+                createNotification.error({
+                  title: 'Error',
+                  description: 'Error al actualizar la cita.'
+                })
+            }
+          )
+        }
+        confirmLoading={isPendingUpdateAppointment}
       />
     </>
   )
