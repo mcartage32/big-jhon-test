@@ -55,3 +55,14 @@ export interface ICreateAppointmentPayload {
   delivered_at?: string | null
   observations?: string
 }
+
+export interface IProductLineDeliveryStats {
+  product_line: string
+  total_deliveries: number
+  avg_hours: number
+  avg_minutes: number
+}
+
+export interface IProductLineDeliveryStatsResponse {
+  data: IProductLineDeliveryStats[]
+}
