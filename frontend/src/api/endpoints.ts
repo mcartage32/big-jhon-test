@@ -2,6 +2,11 @@ const ENDPOINTS = {
   LOGIN: 'users/login/',
   LOGOUT: 'users/logout/',
   DASHBOARD: 'appointments/dashboard/',
+  SUPPLIERS: 'appointments/suppliers/',
+  PRODUCT_LINES: 'appointments/product-lines/',
+  APPOINTMENTS_STATUSES: 'appointments/statuses/',
+  APPOINTMENTS_LIST: 'appointments/list/',
+  ////
   CREATE_USER: 'auth/register',
   FIND_USER_BY_EMAIL: 'auth/find-by-email',
   DEPARTMENTS: 'departments',
